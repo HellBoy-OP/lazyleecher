@@ -17,7 +17,7 @@
 import asyncio
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from .. import ALL_CHATS, help_dict
+from .. import ALL_CHATS, help_dict, BOT_USERNAME
 from ..utils import custom_filters
 
 @Client.on_message(filters.command(['help', f'help@{BOT_USERNAME}']) & filters.chat(ALL_CHATS))
