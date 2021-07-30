@@ -22,7 +22,7 @@ from urllib.parse import quote as urlencode, urlsplit
 from pyrogram import Client, filters
 from pyrogram.parser import html as pyrogram_html
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from .. import ALL_CHATS, session, help_dict
+from .. import ALL_CHATS, session, help_dict, BOT_USERNAME as BU
 from ..utils import custom_filters
 
 search_lock = asyncio.Lock()
@@ -71,14 +71,14 @@ async def return_search(query, page=1, sukebei=False):
 
 message_info = dict()
 ignore = set()
-@Client.on_message(filters.command(['ts', 'nyaa', 'nyaasi']))
+@Client.on_message(filters.command(['ts', f'ts@{BU}', 'nyaa', f'nyaa@{BU}', 'nyaasi', f'nyaasi@{BU}']))
 async def nyaa_search(client, message):
     text = message.text.split(' ')
     text.pop(0)
     query = ' '.join(text)
     await init_search(client, message, query, False)
 
-@Client.on_message(filters.command(['sts', 'sukebei']))
+@Client.on_message(filters.command(['sts', f'sts@{BU}', 'sukebei', f'sukebei@{BU}']))
 async def nyaa_search_sukebei(client, message):
     text = message.text.split(' ')
     text.pop(0)
