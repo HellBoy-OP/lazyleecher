@@ -22,12 +22,12 @@ import tempfile
 from urllib.parse import urlparse, urlunparse, unquote as urldecode
 from pyrogram import Client, filters
 from pyrogram.parser import html as pyrogram_html
-from .. import ADMIN_CHATS, ALL_CHATS, PROGRESS_UPDATE_DELAY, session, help_dict, LEECH_TIMEOUT, MAGNET_TIMEOUT, SendAsZipFlag, ForceDocumentFlag
+from .. import ADMIN_CHATS, ALL_CHATS, PROGRESS_UPDATE_DELAY, session, help_dict, LEECH_TIMEOUT, MAGNET_TIMEOUT, SendAsZipFlag, ForceDocumentFlag, BOT_USERNAME as BU
 from ..utils.aria2 import aria2_add_torrent, aria2_tell_status, aria2_remove, aria2_add_magnet, Aria2Error, aria2_tell_active, is_gid_owner, aria2_add_directdl
 from ..utils.misc import format_bytes, get_file_mimetype, return_progress_string, calculate_eta, allow_admin_cancel
 from ..utils.upload_worker import upload_queue, upload_statuses, progress_callback_data, upload_waits, stop_uploads
 
-@Client.on_message(filters.command(['torrent', 'ziptorrent', 'filetorrent']) & filters.chat(ALL_CHATS))
+@Client.on_message(filters.command(['torrent', f'torrent@{BU}', 'ziptorrent', f'ziptorrent@{BU}', 'filetorrent', f'filetorrent@{BU}']) & filters.chat(ALL_CHATS))
 async def torrent_cmd(client, message):
     text = (message.text or message.caption).split(None, 1)
     command = text.pop(0).lower()
@@ -93,7 +93,7 @@ async def initiate_torrent(client, message, link, flags):
             os.remove(link)
     await handle_leech(client, message, gid, reply, user_id, flags)
 
-@Client.on_message(filters.command(['magnet', 'zipmagnet', 'filemagnet']) & filters.chat(ALL_CHATS))
+@Client.on_message(filters.command(['magnet', f'magnet@{BU}', 'zipmagnet', f'zipmagnet@{BU}', 'filemagnet', f'filemagnet@{BU}']) & filters.chat(ALL_CHATS))
 async def magnet_cmd(client, message):
     text = (message.text or message.caption).split(None, 1)
     command = text.pop(0).lower()
@@ -134,7 +134,7 @@ async def initiate_magnet(client, message, link, flags):
     else:
         await handle_leech(client, message, gid, reply, user_id, flags)
 
-@Client.on_message(filters.command(['directdl', 'direct', 'zipdirectdl', 'zipdirect', 'filedirectdl', 'filedirect']) & filters.chat(ALL_CHATS))
+@Client.on_message(filters.command(['directdl', f'directdl@{BU}', 'direct', f'direct@{BU}', 'zipdirectdl', f'zipdirectdl@{BU}', 'zipdirect', f'zipdirect@{BU}', 'filedirectdl', f'filedirectdl@{BU}, 'filedirect', f'filedirect@{BU}]) & filters.chat(ALL_CHATS))
 async def directdl_cmd(client, message):
     text = message.text.split(None, 1)
     command = text.pop(0).lower()
@@ -278,7 +278,7 @@ async def handle_leech(client, message, gid, reply, user_id, flags):
             if task:
                 await task
 
-@Client.on_message(filters.command('list') & filters.chat(ALL_CHATS))
+@Client.on_message(filters.command(['list', 'list@{BU}']) & filters.chat(ALL_CHATS))
 async def list_leeches(client, message):
     user_id = message.from_user.id
     text = ''
@@ -306,7 +306,7 @@ async def list_leeches(client, message):
         text = 'No leeches found.'
     await message.reply_text(text, quote=quote)
 
-@Client.on_message(filters.command('cancel') & filters.chat(ALL_CHATS))
+@Client.on_message(filters.command(['cancel', f'cancel@{BU}']) & filters.chat(ALL_CHATS))
 async def cancel_leech(client, message):
     user_id = message.from_user.id
     gid = None
