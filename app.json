@@ -9,6 +9,9 @@
         "BOT_TOKEN": {
             "description": "https://t.me/BotFather"
         },
+        "BOT_USERNAME": {
+            "description": "Bot username without @"
+        },
         "TESTMODE": {
             "description": "Use Telegram's test servers",
             "value": "0",
