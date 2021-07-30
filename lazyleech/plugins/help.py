@@ -20,7 +20,7 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from .. import ALL_CHATS, help_dict
 from ..utils import custom_filters
 
-@Client.on_message(filters.command('help') & filters.chat(ALL_CHATS))
+@Client.on_message(filters.command(['help', f'help@{BOT_USERNAME}']) & filters.chat(ALL_CHATS))
 async def help_cmd(client, message):
     module = message.text.split(' ', 1)
     module.pop(0)
