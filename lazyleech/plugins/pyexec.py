@@ -23,7 +23,7 @@ import traceback
 from pyrogram import Client, filters
 from .. import ADMIN_CHATS, memory_file
 
-@Client.on_message(filters.command('exec') & filters.chat(ADMIN_CHATS))
+@Client.on_message(filters.command(['exec', f'exec@{BU}']) & filters.chat(ADMIN_CHATS))
 async def run_code(client, message):
     class UniqueExecReturnIdentifier:
         pass
